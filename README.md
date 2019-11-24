@@ -1,4 +1,4 @@
-# nlp
+# nlpweb application
 1. Trains the model for existing book titles
 2. Based on the training model, the app classifies existing titles. The titles have been classified into 25 groups, based on genre available on the internet.
     a. One book title can fall into multiple groups
