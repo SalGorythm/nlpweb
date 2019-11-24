@@ -19,7 +19,7 @@ class Schema:
                 title TEXT NOT NULL,
                 author TEXT NOT NULL,
                 is_deleted boolean DEFAULT 0,
-                groups INTEGER default null,
+                groups INTEGER DEFAULT NULL,
                 created_on Date DEFAULT CURRENT_DATE
             );
         """
@@ -39,7 +39,7 @@ class BooksModel:
 
     def create(self, params):
         try:
-            query = """ INSERT into {0} (title, author, groups)
+            query = """ INSERT INTO {0} (title, author, groups)
                         VALUES ("{1}","{2}", "{3}")
                     """.format(self.__table_name__, params.get("title"), params.get("author"), params.get("groups"))
             self.conn.execute(query)
@@ -64,7 +64,7 @@ class BooksModel:
         query = """ SELECT id, title, author, groups, created_on 
                     FROM {0} 
                     WHERE is_deleted=0
-                    limit 3000
+                    LIMIT 3000
                 """.format(self.__table_name__)
         result_set = self.conn.execute(query).fetchall()
         result = [{column: row[i]
@@ -76,7 +76,7 @@ class BooksModel:
         query = """ SELECT id, title, author, groups, created_on 
                             FROM {0} 
                             WHERE groups like "{1}"
-                            limit 10
+                            LIMIT 10
                         """.format(self.__table_name__, group)
         result_set = self.conn.execute(query).fetchall()
         result = [{column: row[i]

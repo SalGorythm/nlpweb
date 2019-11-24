@@ -3,11 +3,7 @@ import math
 import pandas as pd
 import sqlite3
 import gensim
-from gensim.utils import simple_preprocess
-from gensim.parsing.preprocessing import STOPWORDS
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
-from nltk.stem.porter import *
-import numpy as np
 from models import BooksModel
 from pandas import DataFrame
 import xml.etree.ElementTree as ET
@@ -57,7 +53,6 @@ class ExportData:
         return True
 
     def export_xml(self, export_type):
-        # create the file structure
         xml_data = ET.Element('data')
         if int(export_type) == 2:
             for obj in self.data:
@@ -81,7 +76,6 @@ class ExportData:
                 title.text = obj["title"]
                 author.text = obj["author"]
 
-        # create a new XML file with the results
         mydata = ET.tostring(xml_data)
         mydata = str(mydata, 'utf-8')
         myfile = open("static/export_data.xml", "w")
@@ -92,7 +86,6 @@ class ExportData:
 def fetch_all_titles():
     conn = sqlite3.connect('nlp_learn.db')
 
-    # data = pd.read_csv('abcnews-date-text.csv', error_bad_lines=False);
     query = "SELECT id, title FROM books"
     result_set = conn.execute(query).fetchall()
     data = pd.DataFrame(result_set, columns=['id', 'title'])
@@ -141,7 +134,6 @@ def get_paginated_list(results, start, limit):
     limit = int(limit)
     count = len(results)
     if count < start or limit < 0:
-        # abort(404)
         return {
             'start': start,
             'limit': limit,
@@ -149,7 +141,7 @@ def get_paginated_list(results, start, limit):
             'results': [],
             'total_pages': math.ceil(count / limit) if (count > 0) else 0
         }
-    # make response
+
     obj = {
         'start': start,
         'limit': limit,

@@ -71,10 +71,8 @@ def get_group_wise_books():
 def delete_book(item_id):
     try:
         books_list = Books().delete(item_id)
-        # return list_books()
         return render_template("index.html", results={"data": books_list, "suggestion_flag": False,
                                                       "suggested_books": []})
-        # return json_success(results=books_list)
     except Exception as e:
         return json_error(message=str(e))
 
@@ -90,7 +88,6 @@ def export_excel(export_type):
 # description="This URL will export XML data"
 def export_xml(export_type):
     ExportData().export_xml(export_type)
-    # return send_from_directory(directory="static/", filename="export_data.xml")
     return send_file("static/export_data.xml", as_attachment=True, attachment_filename="books_data.xml")
 
 
@@ -124,16 +121,12 @@ def train_book_model():
 @app.route("/add-static-data", methods=["GET"])
 def add_new_book():
     filename = "books_2.json"
-    temp = {}
     with open(filename, 'r') as json_data:
-        # print(type(f))
         temp = json.load(json_data)
 
     counter = 0
     for obj in temp:
-        # print(obj["authors"])
-        # params = {"title": obj["title"], "author": ", ".join(obj["authors"])}
-        books_list = Books().create(obj)
+        Books().create(obj)
         counter += 1
 
     return json_success(results=counter)
@@ -143,10 +136,7 @@ def add_new_book():
 def add_authors():
     conn = sqlite3.connect('nlp_learn.db')
     filename = "goodreads_book_authors.json"
-    temp = {}
     with open(filename, 'r') as json_data:
-        # print(type(json_data))
-        # jsonn = json.dump(json_data)
         temp = json.load(json_data)
 
     commit_counter = 0
